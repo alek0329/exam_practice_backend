@@ -1,8 +1,7 @@
 package utils;
 
 
-import entities.Role;
-import entities.User;
+import entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,20 +22,37 @@ public class SetupTestUsers {
     // Also, either delete this file, when users are created or rename and add to .gitignore
     // Whatever you do DO NOT COMMIT and PUSH with the real passwords
 
-    User user = new User("owner", "123");
-    User admin = new User("admin", "123");
-    User both = new User("owner_admin", "123");
+    User user = new User("user", "kode123");
+    User admin = new User("admin", "kode123");
+    User both = new User("user_admin", "kode123");
+
+    Owner hans = new Owner("Hans Hansen","Hansensgade 12","25528524");
+    Owner Ditlev = new Owner("Ditlev Hansen","Hansensgade 12","25528524");
+    Harbour cph = new Harbour("København","Københavns Havn",5);
+    Boat boat = new Boat("big boat","Scania",hans,cph);
+    Boat Ditlevsboat = new Boat("Ditlevs big boat","Ditlevs Scania",Ditlev,cph);
 
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
-      throw new UnsupportedOperationException("You have not changed the passwords");
+    throw new UnsupportedOperationException("You have not changed the passwords");
 
     em.getTransaction().begin();
-    Role userRole = new Role("owner");
+    Role userRole = new Role("user");
     Role adminRole = new Role("admin");
     user.addRole(userRole);
     admin.addRole(adminRole);
     both.addRole(userRole);
     both.addRole(adminRole);
+
+    hans.addBoat(boat);
+    Ditlev.addBoat(Ditlevsboat);
+    Ditlevsboat.setHarbour(cph);
+    boat.setHarbour(cph);
+    em.persist(Ditlev);
+    em.persist(Ditlevsboat);
+    em.persist(hans);
+    em.persist(cph);
+    em.persist(boat);
+
     em.persist(userRole);
     em.persist(adminRole);
     em.persist(user);

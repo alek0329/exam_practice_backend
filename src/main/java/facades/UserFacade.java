@@ -1,8 +1,10 @@
 package facades;
 
 import DTO.UserDTOS.CreateUserDTO;
+import DTO.OwnerDTOS.OwnerDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import entities.Owner;
 import entities.Role;
 import entities.User;
 
@@ -11,6 +13,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 
 import security.errorhandling.AuthenticationException;
+
+import java.util.List;
 
 /**
  * @author lam@cphbusiness.dk
@@ -57,15 +61,15 @@ public class UserFacade {
         User user = new User(username, password);
         Role userRole;
         try {
-            if (em.find(Role.class, "owner") != null) {
+            if (em.find(Role.class, "user") != null) {
                 em.getTransaction().begin();
-                userRole = em.find(Role.class, "owner");
+                userRole = em.find(Role.class, "user");
                 user.addRole(userRole);
                 em.persist(user);
                 em.getTransaction().commit();
             }
             else {
-                Role newUserRole = new Role("owner");
+                Role newUserRole = new Role("user");
                 em.getTransaction().begin();
                 em.persist(newUserRole);
                 user.addRole(newUserRole);
@@ -87,5 +91,16 @@ public class UserFacade {
         return gson.toJson(createUserDTO);
     }
 
+    public List<OwnerDTO> getAllOwners() {
+        EntityManager em = emf.createEntityManager();
+        List <Owner> allOwners;
 
+        try {
+            TypedQuery<Owner> tq = em.createQuery("SELECT o FROM Owner o", Owner.class);
+            allOwners = tq.getResultList();
+        }finally {
+            em.close();
+        }
+        return OwnerDTO.getDTO(allOwners);
+        }
 }
