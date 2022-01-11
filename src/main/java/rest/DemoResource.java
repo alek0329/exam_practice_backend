@@ -1,6 +1,8 @@
 package rest;
 
+import DTO.HarbourDTOs.HarbourDTO;
 import DTO.OwnerDTOS.OwnerDTO;
+import DTO.boatDTOs.BoatDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -9,16 +11,15 @@ import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.NotFoundException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
+import entities.Harbour;
 import entities.User;
+import facades.BoatFacade;
 import facades.UserFacade;
 import utils.EMF_Creator;
 
@@ -29,6 +30,7 @@ import utils.EMF_Creator;
 public class DemoResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final UserFacade FACADE = UserFacade.getUserFacade(EMF);
+    private static final BoatFacade BOAT_FACADE = BoatFacade.getBoatFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     @Context
     private UriInfo context;
@@ -79,4 +81,23 @@ public class DemoResource {
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("harbour/{harbourId}")
+    public String getHarbourBoats (@PathParam("harbourId")int harbourId) throws NotFoundException{
+        List<BoatDTO> allBoatsInHarbour = null;
+        if (harbourId != 0) {
+            try {
+                allBoatsInHarbour = BOAT_FACADE.getAllBoatsInHarbour(harbourId);
+            } catch (Exception e) {
+                throw new NotFoundException("Harbour could not be found");
+            } }else{
+                throw new NotFoundException("Missing harbour id");
+            }
+         if (allBoatsInHarbour != null){
+            return GSON.toJson(allBoatsInHarbour);
+        }else {
+            throw new NotFoundException("No boats in the harbour");
+        }
+}
 }
