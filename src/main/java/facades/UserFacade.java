@@ -57,15 +57,15 @@ public class UserFacade {
         User user = new User(username, password);
         Role userRole;
         try {
-            if (em.find(Role.class, "user") != null) {
+            if (em.find(Role.class, "owner") != null) {
                 em.getTransaction().begin();
-                userRole = em.find(Role.class, "user");
+                userRole = em.find(Role.class, "owner");
                 user.addRole(userRole);
                 em.persist(user);
                 em.getTransaction().commit();
             }
             else {
-                Role newUserRole = new Role("user");
+                Role newUserRole = new Role("owner");
                 em.getTransaction().begin();
                 em.persist(newUserRole);
                 user.addRole(newUserRole);
