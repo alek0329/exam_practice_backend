@@ -86,5 +86,19 @@ public class BoatFacade {
         return new BoatDTO(boatToAdd);
     }
 
-
+    public BoatDTO removeBoat(int id) {
+        EntityManager em = emf.createEntityManager();
+        Boat boatToRemove;
+        try {
+            em.getTransaction().begin();
+            boatToRemove = em.find(Boat.class, id);
+            em.remove(boatToRemove);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new BoatDTO(boatToRemove);
+    }
 }
+
+

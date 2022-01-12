@@ -150,4 +150,28 @@ public class DemoResource {
             throw new NotFoundException("boat not found");
         }
     }
+    @DELETE
+    @Path("removeBoat/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeBoat(@PathParam("id") int boatId) throws NotFoundException {
+
+        BoatDTO boatResponseDTO = null;
+
+        if (boatId != 0) {
+            try {
+                boatResponseDTO = BOAT_FACADE.removeBoat(boatId);
+            } catch (Exception e) {
+                throw new NotFoundException("Boat could not be removed");
+            }
+        } else {
+            throw new NotFoundException("Missing boat or id");
+        }
+        if (boatResponseDTO != null) {
+            return GSON.toJson(boatResponseDTO);
+        } else {
+            throw new NotFoundException("Hobby could not be removed");
+        }
+    }
+
 }
