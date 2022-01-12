@@ -38,6 +38,7 @@ public class Boat {
 
     }
 
+
     public int getBoatId() {
         return boatId;
     }

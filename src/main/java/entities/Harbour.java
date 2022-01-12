@@ -45,6 +45,10 @@ public class Harbour {
         }
     }
 
+    public void harbourRemover (Boat boat){
+        boats.remove(boat);
+    }
+
     public int getHarbourId() {
         return harbourId;
     }

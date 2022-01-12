@@ -67,12 +67,17 @@ public class BoatFacade {
             System.out.println("getting boats");
             boatToAdd = em.find(Boat.class, boatId);
             harbourToAdd = em.find(Harbour.class, harbourId);
+            if(boatToAdd.getHarbour() != null) {
+                Harbour oldHarbour = boatToAdd.getHarbour();
+                oldHarbour.harbourRemover(boatToAdd);
+            }
             System.out.println("adding boat");
             harbourToAdd.addBoat(boatToAdd);
             boatToAdd.setHarbour(harbourToAdd);
             em.merge(harbourToAdd);
             em.merge(boatToAdd);
             em.getTransaction().commit();
+            System.out.println(harbourToAdd.getBoats().size());
         } catch (Exception e) {
             e.getStackTrace();
         } finally {
