@@ -57,6 +57,29 @@ public class BoatFacade {
         return new BoatDTO(boat);
 
     }
+    public BoatDTO addBoatToHarbour(int harbourId, int boatId){
+        EntityManager em = emf.createEntityManager();
+        Boat boatToAdd = null;
+        Harbour harbourToAdd = null;
+
+        try {
+            em.getTransaction().begin();
+            System.out.println("getting boats");
+            boatToAdd = em.find(Boat.class, boatId);
+            harbourToAdd = em.find(Harbour.class, harbourId);
+            System.out.println("adding boat");
+            harbourToAdd.addBoat(boatToAdd);
+            boatToAdd.setHarbour(harbourToAdd);
+            em.merge(harbourToAdd);
+            em.merge(boatToAdd);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.getStackTrace();
+        } finally {
+            em.close();
+        }
+        return new BoatDTO(boatToAdd);
+    }
 
 
 }

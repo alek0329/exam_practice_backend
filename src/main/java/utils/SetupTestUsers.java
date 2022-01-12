@@ -29,6 +29,7 @@ public class SetupTestUsers {
     Owner hans = new Owner("Hans Hansen","Hansensgade 12","25528524");
     Owner Ditlev = new Owner("Ditlev Hansen","Hansensgade 12","25528524");
     Harbour cph = new Harbour("København","Københavns Havn",5);
+    Harbour odense = new Harbour("Odense","Odense Havn",10);
     Boat boat = new Boat("big boat","Scania");
     Boat Ditlevsboat = new Boat("Ditlevs big boat","Ditlevs Scania");
 
@@ -51,6 +52,7 @@ public class SetupTestUsers {
     em.persist(Ditlevsboat);
     em.persist(hans);
     em.persist(cph);
+    em.persist(odense);
     em.persist(boat);
 
     em.persist(userRole);

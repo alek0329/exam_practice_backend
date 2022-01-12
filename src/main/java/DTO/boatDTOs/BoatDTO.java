@@ -32,6 +32,7 @@ public class BoatDTO {
         }
     }
 
+
     public int getBoatID() {
         return boatID;
     }
