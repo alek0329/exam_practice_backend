@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import entities.Boat;
 import entities.Harbour;
+import org.eclipse.persistence.jpa.jpql.tools.spi.IEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,6 +40,22 @@ public class BoatFacade {
             em.close();
         }
         return BoatDTO.getDTO(boatsInHarbour);
+    }
+
+    public BoatDTO createNewBoat(BoatDTO boatDTO){
+        EntityManager em = emf.createEntityManager();
+        Boat boat = null;
+
+        try {
+            em.getTransaction().begin();
+            boat = new Boat(boatDTO.getBrand(), boatDTO.getName());
+            em.persist(boat);
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+        return new BoatDTO(boat);
+
     }
 
 

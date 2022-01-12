@@ -29,8 +29,8 @@ public class SetupTestUsers {
     Owner hans = new Owner("Hans Hansen","Hansensgade 12","25528524");
     Owner Ditlev = new Owner("Ditlev Hansen","Hansensgade 12","25528524");
     Harbour cph = new Harbour("København","Københavns Havn",5);
-    Boat boat = new Boat("big boat","Scania",hans,cph);
-    Boat Ditlevsboat = new Boat("Ditlevs big boat","Ditlevs Scania",Ditlev,cph);
+    Boat boat = new Boat("big boat","Scania");
+    Boat Ditlevsboat = new Boat("Ditlevs big boat","Ditlevs Scania");
 
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
     throw new UnsupportedOperationException("You have not changed the passwords");

@@ -28,7 +28,7 @@ public class Boat {
     @JoinColumn(name="HarbourID")
     private Harbour harbour;
 
-    public Boat(String brand, String name, Owner owner, Harbour harbour) {
+    public Boat(String brand, String name) {
         this.boatId = boatId;
         this.brand = brand;
         this.name = name;

@@ -100,4 +100,27 @@ public class DemoResource {
             throw new NotFoundException("No boats in the harbour");
         }
 }
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("Createboat")
+    public String boatCreator (BoatDTO boatDTO){
+        BoatDTO boatResponseDTO = null;
+        if (boatDTO != null){
+            try {
+                System.out.println(boatDTO.toString());
+                boatResponseDTO = BOAT_FACADE.createNewBoat(boatDTO);
+            }catch (Exception e){
+                throw  new NotFoundException("Boat could not be created");
+            }
+        }else { throw new NotFoundException("Missing boat");
+        }
+        if (boatResponseDTO != null){
+            return GSON.toJson(boatResponseDTO);
+        }else{
+            throw new NotFoundException("Boat could not be inserted");
+        }
+
+    }
+
 }
